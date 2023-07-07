@@ -1,2 +1,7 @@
 django
 Pillow
+numpy
+scikit-image
+pandas
+scikit-learn
+

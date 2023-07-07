@@ -1,0 +1,21 @@
+{% extends 'RImageModel/base.html' %}
+
+{% load static %}
+
+{% block 'header' %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="{% static 'RImageModel/css/style.css' %}">
+
+{% endblock 'header' %}
+
+{% block 'body' %}
+    <body>
+        <div>
+            <img src="{{image.url}}">
+
+            <p> {{ identite }} </p>
+        </div>
+        
+    </body>
+{% endblock 'body' %}
+

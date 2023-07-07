@@ -1,0 +1,48 @@
+{% extends 'RImageModel/base.html' %}
+
+{% load static %}
+
+{% block 'header' %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="{% static 'RImageModel/css/style.css' %}">
+
+{% endblock 'header' %}
+
+{% block 'body' %}
+    <body>
+        <div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="dragger_wrapper">
+                    <div id="dragger">
+                        <div class="icon"><i class="fa-solid fa-images"></i></div>
+                        <h2 id="dragger_text"> Drag and drop file </h2>
+                        <h3> OR </h3>
+                        <Button id="log" placeholder="Login" name="image" onclick="browseFileMonitor()" > Browse File </Button> 
+                        <input type="file" id="log" placeholder="Login" name="image" value="{{form.image.value|default_if_none:''}}" >
+                    </div>
+                    <div id="filename">
+                    
+                    </div>
+                    <button type="submit" class="w-25 text-white text-uppercase border-0 shadow rounded-pill m-3 p-2" style="background-color:#F73859;"> Selectionner un visage </button>
+                </div>
+
+                <div> 
+                    
+                    <select name="pretraitement" required="remplir ce champ">
+                        <option value="GLCM">GLCM</option>
+                        <option value="LGP"> LGP </option>
+                    </select>
+                </div>
+
+                <!--<input type="file" id="log" placeholder="Login" name="image" value="{{form.image.value|default_if_none:''}}" >
+                <button type="submit" class="w-25 text-white text-uppercase border-0 shadow rounded-pill m-3 p-2" style="background-color:#F73859;"> Selectionner un visage </button>-->
+            </form>
+            
+            <script src="{% static 'RImageModel/js/index.js' %}" > </script>
+            
+        </div>
+        
+    </body>
+{% endblock 'body' %}
+

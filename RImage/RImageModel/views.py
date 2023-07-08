@@ -12,25 +12,22 @@ path_own = os.getcwd()
 from skimage.io import imread
 
 
-def equi_predict(predprob, classes=np.array(["Assu","EBODE", "Joel", "Lador","Landry", "Ridano", ])):
+def equi_predict(predprob, classes=np.array(["Assu","EBODE", "Joel", "Lador","Landry", "Lolita", "Ridano", ])):
     return classes[np.argmax(predprob)]
 
-def SousmodelsLBP(imagePATH, ):
+def PretraitementLBP(imagePATH, ):
     imP = path_own+imagePATH
     image = from_color_to_gray_level(imread(imP))
-    model = load_model("LBP")
     image = image_transformation(image, "LBP")
     
-    classes = np.array
-    return equi_predict(model.predict_proba(image.reshape(1, -1)))
-
-def SousmodelsGLCM0(imagePATH, ):
+    return image
+    
+def PretraitementGLCM0(imagePATH, ):
     imP = path_own+imagePATH
     image = from_color_to_gray_level(imread(imP))
-    model = load_model("GLCM0")
     image = image_transformation(image, "GLCM0")
     
-    return equi_predict(model.predict_proba(image.reshape(1, -1)))
+    return image
 
 def SousmodelsGLCM90(imagePATH, ):
     imP = path_own+imagePATH
@@ -40,17 +37,36 @@ def SousmodelsGLCM90(imagePATH, ):
     
     return equi_predict(model.predict_proba(image.reshape(1, -1)))
 
-def modelML(imagePATH, pretraitement):
+def GLModel(imagePATH):
+    imP = path_own+imagePATH
+    image = from_color_to_gray_level(imread(imP))
+    lineDATA = image_transformation_0(image)
+    model = load_model("LBP_GLCM0")
     
+    print("lineDATA ---------")
+    print("lineDATA ---------")
+    print(len(lineDATA))
+    print(lineDATA)
+    print(len(lineDATA))
+    print("lineDATA ---------")
+    print("lineDATA ---------")
+    
+    #return model.predict_proba((np.array(lineDATA)).reshape(1, -1))
+    return model.predict(lineDATA.reshape(1, -1))[0]
+
+def modelML_(imagePATH, pretraitement):
     if pretraitement=="GLCM0" :
         return SousmodelsGLCM0(imagePATH)
     elif pretraitement=="GLCM90" :
         return SousmodelsGLCM90(imagePATH)
     else :
         return SousmodelsLBP(imagePATH)
-    
-    #return "Unknow"
 
+def modelML(imagePATH, pretraitement):
+    
+    if True:
+        return GLModel(imagePATH)
+        
 
 class ClassifierImView(View):
     
@@ -60,9 +76,7 @@ class ClassifierImView(View):
     
     def post(self, request):
         TabP = {
-            "LBP" : 1,
-            "GLCM0" : 2,
-            "GLCM90" : 3,
+            "LBP_GLCM" : 1,
         }
         formIm = ImageFaceForm(self.request.POST, self.request.FILES)
         print("self.request.POST -------------")
@@ -79,9 +93,7 @@ class ModelIdentification(View):
     
     def get(self, request, imId, pretraitement):
         TabP = {
-            '1' : "LBP",
-            '2' : "GLCM0",
-            '3' : "GLCM90",
+            '1' : "LBP_GLCM",
         }
         image = ImageToClassifi.objects.filter(pk=imId).first()
         print("------------------")

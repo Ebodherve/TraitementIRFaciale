@@ -141,26 +141,39 @@ def haralick_np_feature_render(GLCM_matrix):
 
 
 def load_model(model_type):
-    if(model_type == "LBP"):
+    if model_type == "LBP" :
         path_model = path_own+"/RImageModel/model_SML/"+'img_model_lbp.p'
         model=pickle.load(open(path_model,'rb'))
         return model
-    else:
+    elif model_type == "GLCM0":
         path_model = path_own+"/RImageModel/model_SML/"+'img_model_glcm_0.p'
         dataU = pickle.Unpickler(open(path_model,'rb'))
         model = dataU.load()
+    else :
+        path_model = path_own+"/RImageModel/model_SML/"+'img_model_glcm_90.p'
+        dataU = pickle.Unpickler(open(path_model,'rb'))
+        model = dataU.load()
+
     print("chargement reussi")
 
     return model
 
 def image_transformation(image, transformation_type):
-    if(transformation_type == "LBP"):
+    if transformation_type == "LBP" :
         img_array= LBP(image) # ici on trouve le LBP correspondant a chaque image
         img_array= np.array(Hist_LBP(img_array)) 
         img_array = (img_array - np.min(img_array))/np.max(img_array) # ici on normalise nos données en faisant du centré et réduire
         return img_array
-    else:
+    elif transformation_type == "GLCM0":
         img_array=GLCM_0(image)
+        img_array = (img_array - np.min(img_array))/np.max(img_array) # ici on normalise nos données en faisant du centré et réduire
+        feature_image = haralick_np_feature_render(img_array)
+        feature_image = (feature_image - np.min(feature_image))/np.max(feature_image)
+        
+        return feature_image
+
+    else:
+        img_array=GLCM_90(image)
         img_array = (img_array - np.min(img_array))/np.max(img_array) # ici on normalise nos données en faisant du centré et réduire
         feature_image = haralick_np_feature_render(img_array)
         feature_image = (feature_image - np.min(feature_image))/np.max(feature_image)

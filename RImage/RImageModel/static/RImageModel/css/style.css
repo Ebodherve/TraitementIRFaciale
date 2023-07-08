@@ -89,3 +89,7 @@ h1, h2{
     color:red;
 }
 
+#identite{
+    padding: 25px, 25px, 25px, 25px;
+    align-self: center;
+}
